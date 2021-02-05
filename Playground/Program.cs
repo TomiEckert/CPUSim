@@ -43,49 +43,58 @@ namespace Playground {
                          .AddInstructionField("ignore8", 8, CpuFieldType.Ignore)
                          .AddInstructionField("data8", 8, CpuFieldType.Data)
                          .AddInstructionField("address8", 8, CpuFieldType.Address)
-                         .AddCpuInstruction("READ",
+                         .AddCpuInstruction("read",
                                             CpuValue.FromInteger(1, 8),
                                             new[] {"read"},
                                             new[] {"ignore8"})
-                         .AddCpuInstruction("WRITE",
+                         .AddCpuInstruction("write",
                                             CpuValue.FromInteger(2, 8),
                                             new[] {"write"},
                                             new[] {"ignore8"})
-                         .AddCpuInstruction("ADD",
+                         .AddCpuInstruction("add",
                                             CpuValue.FromInteger(3, 8),
                                             new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "add"},
                                             new[] {"data8"})
-                         .AddCpuInstruction("SUB",
+                         .AddCpuInstruction("sub",
                                             CpuValue.FromInteger(4, 8),
                                             new[] {"zero-bx", "ir(9-16)-bx", "sub"},
                                             new[] {"data8"})
-                         .AddCpuInstruction("MULT",
+                         .AddCpuInstruction("mult",
                                             CpuValue.FromInteger(5, 8),
                                             new[] {"zero-bx", "ir(9-16)-bx", "mult"},
                                             new[] {"data8"})
-                         .AddCpuInstruction("DIV",
+                         .AddCpuInstruction("div",
                                             CpuValue.FromInteger(6, 8),
                                             new[] {"zero-bx", "ir(9-16)-bx", "div"},
                                             new[] {"data8"})
-                         .AddCpuInstruction("HALT",
+                         .AddCpuInstruction("halt",
                                             CpuValue.FromInteger(7, 8),
                                             new[] {"halt"},
                                             new[] {"ignore8"})
-                         .AddCpuInstruction("JUMP",
+                         .AddCpuInstruction("jump",
                                             CpuValue.FromInteger(8, 8),
                                             new[] {"ir(9-16)-pc"},
                                             new[] {"address8"})
-                         .AddCpuInstruction("JEQZ",
+                         .AddCpuInstruction("jeqz",
                                             CpuValue.FromInteger(9, 8),
                                             new[] {"eqze", "ir(9-16)-pc"},
                                             new[] {"address8"})
-                         .AddCpuInstruction("JNEZ",
+                         .AddCpuInstruction("read",
                                             CpuValue.FromInteger(10, 8),
                                             new[] {"neze", "ir(9-16)-pc"},
                                             new[] {"address8"})
                          .Build();
 
             var cpu = new Cpu(config);
+
+            const string code1 = @"
+:Start read
+	jeqz Done
+	sub 1
+	jump Start
+:Done write
+	halt
+";
 
             const string code = @"
 READ
@@ -101,7 +110,7 @@ ADD 69
 WRITE
 HALT
 ";
-            cpu.Compile(code);
+            cpu.Compile(code1);
             cpu.Execute();
         }
     }

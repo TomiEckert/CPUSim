@@ -33,6 +33,7 @@ namespace Simulator.Configuration {
 
         internal bool Debug { get; }
         internal int InstructionSize { get; }
+        internal string CurrentInstruction { get; set; }
         internal IEnumerable<Register> Registers { get; }
         internal IEnumerable<MicroInstruction> MicroInstructions { get; }
         internal IEnumerable<MicroInstruction> FdeCycle { get; }

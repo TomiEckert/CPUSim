@@ -30,16 +30,16 @@ namespace Simulator {
                 Console.Write(lineNr.PadLeft(4, '0'));
                 Console.WriteLine(Memory.GetValueAt(i, Configuration.InstructionSize).Bin);
             }
-
             Console.ReadLine();
             Console.Clear();
         }
 
         public void Execute() {
             while (true) {
-                if (Registers.GetHalt().GetInt() > 0)
-                    return;
+                if (Registers.GetHalt().GetInt() > 0) return;
 
+                Configuration.CurrentInstruction = "fde cycle";
+                
                 foreach (var instruction in Configuration.FdeCycle) instruction.ExecuteAction(this);
             }
         }
@@ -47,6 +47,8 @@ namespace Simulator {
         internal void DisplayRegisters(string instruction) {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine(Registers.GetRegisterData());
+            Console.WriteLine(" ---");
+            Console.WriteLine(Configuration.CurrentInstruction + "            ");
             Console.WriteLine(instruction + "            ");
             Console.ReadLine();
         }

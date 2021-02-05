@@ -61,9 +61,8 @@ namespace Simulator {
         }
 
         private static void ProcessData(CpuToken token, Cpu cpu, InstructionField requirement) {
-            if (requirement == null)
-                throw new UnexpectedInstructionException();
-
+            if(requirement == null)
+                return;
             switch (requirement.Type) {
                 case CpuFieldType.Ignore:
                     throw new UnexpectedInstructionException();
