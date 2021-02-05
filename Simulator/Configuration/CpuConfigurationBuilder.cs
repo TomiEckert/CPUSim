@@ -74,9 +74,21 @@ namespace Simulator.Configuration {
         }
 
         public CpuConfiguration Build() {
+            VerifyRequiredFields();
             return new CpuConfiguration(_memorySize, _opcodeSize, _instructionSize, _debug, _registers,
                                         _microInstructions,
                                         _fdeCycle, _instructions);
+        }
+
+        private void VerifyRequiredFields() {
+            var verified = _instructionSize != 0;
+            if (_opcodeSize == 0)
+                verified = false;
+            if (_memorySize == 0)
+                verified = false;
+
+            if (!verified)
+                throw new CpuConfigurationExceptions.RequiredFieldsNotAddedException();
         }
     }
 }
