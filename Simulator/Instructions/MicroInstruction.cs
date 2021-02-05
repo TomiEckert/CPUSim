@@ -43,8 +43,8 @@ namespace Simulator.Instructions {
             return new MicroInstruction(name, Action);
         }
 
-        public static MicroInstruction
-            MemoryRead(string name, string addressRegister, string dataRegister, int length) {
+        public static MicroInstruction MemoryRead(string name, string addressRegister,
+                                                  string dataRegister, int length) {
             void Action(Cpu cpu) {
                 cpu.Registers[dataRegister].SetBin(
                     cpu.Memory.GetValueAt(cpu.Registers[addressRegister].GetInt(), length).Bin);

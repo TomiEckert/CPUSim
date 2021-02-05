@@ -10,13 +10,13 @@ namespace Playground {
                          .SetMemorySize(128)
                          .SetOpcodeSize(8)
                          .SetInstructionSize(16)
-                         .AddRegister(Register.Create("ax", 16))
-                         .AddRegister(Register.Create("bx", 16))
-                         .AddRegister(Register.Create("ma", 16))
-                         .AddRegister(Register.Create("md", 16))
-                         .AddRegister(Register.Create("pc", 16))
-                         .AddRegister(Register.Create("ir", 16))
-                         .AddRegister(Register.CreateHalt("halt", 1))
+                         .AddRegister("ax", 16)
+                         .AddRegister("bx", 16)
+                         .AddRegister("ma", 16)
+                         .AddRegister("md", 16)
+                         .AddRegister("pc", 16)
+                         .AddRegister("ir", 16)
+                         .AddRegister("halt", 1, true)
                          .AddMicroInstruction(MicroInstruction.RegisterToRegister("ax-bx", "ax", "bx"))
                          .AddMicroInstruction(MicroInstruction.RegisterToRegister("pc-ma", "pc", "ma"))
                          .AddMicroInstruction(MicroInstruction.RegisterToRegister("md-ir", "md", "ir"))
@@ -35,37 +35,37 @@ namespace Playground {
                          .AddMicroInstruction(MicroInstruction.Set("zero-bx", "bx", 0))
                          .AddMicroInstruction(MicroInstruction.Set("halt", "halt", 1))
                          .AddFdeCycle("pc-ma", "memr", "md-ir", "pc-inc", "decode")
-                         .AddInstructionField(new InstructionField("ignore8", 8, CpuFieldType.Ignore))
-                         .AddInstructionField(new InstructionField("data8", 8, CpuFieldType.Data))
-                         .AddInstructionField(new InstructionField("address8", 8, CpuFieldType.Address))
-                         .AddCpuInstruction(new CpuInstruction("READ",
-                                                               CpuValue.FromInteger(1, 8),
-                                                               new[] {"read"},
-                                                               new[] {"ignore8"}))
-                         .AddCpuInstruction(new CpuInstruction("WRITE",
-                                                               CpuValue.FromInteger(2, 8),
-                                                               new[] {"write"},
-                                                               new[] {"ignore8"}))
-                         .AddCpuInstruction(new CpuInstruction("ADD",
-                                                               CpuValue.FromInteger(3, 8),
-                                                               new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "add"},
-                                                               new[] {"data8"}))
-                         .AddCpuInstruction(new CpuInstruction("SUB",
-                                                               CpuValue.FromInteger(4, 8),
-                                                               new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "sub"},
-                                                               new[] {"data8"}))
-                         .AddCpuInstruction(new CpuInstruction("MULT",
-                                                               CpuValue.FromInteger(5, 8),
-                                                               new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "mult"},
-                                                               new[] {"data8"}))
-                         .AddCpuInstruction(new CpuInstruction("DIV",
-                                                               CpuValue.FromInteger(6, 8),
-                                                               new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "div"},
-                                                               new[] {"data8"}))
-                         .AddCpuInstruction(new CpuInstruction("HALT",
-                                                               CpuValue.FromInteger(7, 8),
-                                                               new[] {"halt"},
-                                                               new[] {"ignore8"}))
+                         .AddInstructionField("ignore8", 8, CpuFieldType.Ignore)
+                         .AddInstructionField("data8", 8, CpuFieldType.Data)
+                         .AddInstructionField("address8", 8, CpuFieldType.Address)
+                         .AddCpuInstruction("READ",
+                                            CpuValue.FromInteger(1, 8),
+                                            new[] {"read"},
+                                            new[] {"ignore8"})
+                         .AddCpuInstruction("WRITE",
+                                            CpuValue.FromInteger(2, 8),
+                                            new[] {"write"},
+                                            new[] {"ignore8"})
+                         .AddCpuInstruction("ADD",
+                                            CpuValue.FromInteger(3, 8),
+                                            new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "add"},
+                                            new[] {"data8"})
+                         .AddCpuInstruction("SUB",
+                                            CpuValue.FromInteger(4, 8),
+                                            new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "sub"},
+                                            new[] {"data8"})
+                         .AddCpuInstruction("MULT",
+                                            CpuValue.FromInteger(5, 8),
+                                            new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "mult"},
+                                            new[] {"data8"})
+                         .AddCpuInstruction("DIV",
+                                            CpuValue.FromInteger(6, 8),
+                                            new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "div"},
+                                            new[] {"data8"})
+                         .AddCpuInstruction("HALT",
+                                            CpuValue.FromInteger(7, 8),
+                                            new[] {"halt"},
+                                            new[] {"ignore8"})
                          .Build();
 
             var cpu = new Cpu(config);

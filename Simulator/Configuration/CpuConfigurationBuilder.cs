@@ -41,8 +41,8 @@ namespace Simulator.Configuration {
             return this;
         }
 
-        public CpuConfigurationBuilder AddRegister(Register register) {
-            _registers.Add(register);
+        public CpuConfigurationBuilder AddRegister(string name, int blockSize, bool halt = false) {
+            _registers.Add(halt ? Register.CreateHalt(name, blockSize) : Register.Create(name, blockSize));
             return this;
         }
 
@@ -51,13 +51,13 @@ namespace Simulator.Configuration {
             return this;
         }
 
-        public CpuConfigurationBuilder AddInstructionField(InstructionField field) {
-            var _ = field;
+        public CpuConfigurationBuilder AddInstructionField(string name, int size, CpuFieldType type) {
+            var _ = new InstructionField(name, size, type);
             return this;
         }
 
-        public CpuConfigurationBuilder AddCpuInstruction(CpuInstruction instruction) {
-            _instructions.Add(instruction);
+        public CpuConfigurationBuilder AddCpuInstruction(string name, CpuValue opCode, string[] micros, string[] fields) {
+            _instructions.Add(new CpuInstruction(name, opCode, micros, fields));
             return this;
         }
 
