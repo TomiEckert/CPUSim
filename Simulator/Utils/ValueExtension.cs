@@ -24,7 +24,7 @@ namespace Simulator.Utils {
         }
 
         internal static CpuValue ToCpuValueFromInt(this string text, int size) {
-            var binary = text;
+            string binary;
             try {
                 var value = Convert.ToInt32(text);
                 binary = Convert.ToString(value, 2);

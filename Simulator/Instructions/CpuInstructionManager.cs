@@ -27,7 +27,8 @@ namespace Simulator.Instructions {
 
         internal CpuValue NameToOpcode(string name) {
             var instruction = GetInstruction(name);
-            return instruction?.OpCode;
+            if (instruction?.OpCode != null) return instruction.OpCode;
+            throw new InvalidOpcodeException();
         }
     }
 }

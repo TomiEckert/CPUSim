@@ -3,29 +3,29 @@
         private Register(string name, int size, bool halt = false) {
             Name = name;
             Size = size;
-            Value = new CpuValue("0", Size);
+            _value = new CpuValue("0", Size);
             Halt = halt;
         }
 
         public string Name { get; }
         public int Size { get; }
         public bool Halt { get; }
-        private CpuValue Value { get; }
+        private CpuValue _value;
 
         public string GetBin() {
-            return Value.Bin;
+            return _value.Bin;
         }
 
         public int GetInt() {
-            return Value.Int;
+            return _value.Int;
         }
 
         public void SetBin(string binary) {
-            Value.SetBinary(binary);
+            _value.Bin = binary;
         }
 
         public void SetInt(int integer) {
-            Value.SetInteger(integer);
+            _value.Int = integer;
         }
 
         public static Register Create(string name, int blockSize) {
