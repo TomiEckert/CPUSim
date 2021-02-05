@@ -33,6 +33,8 @@ namespace Simulator {
                     case CpuTokenType.Data:
                         ProcessData(cpuToken, cpu, requirement);
                         break;
+                    case CpuTokenType.Label:
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -54,7 +56,7 @@ namespace Simulator {
                     i += instruction.Fields.Count(x => x.Type != CpuFieldType.Ignore);
                 }
 
-                if (cpuTokens[i].Type == CpuTokenType.Label) labels.Add(cpuTokens[i].Value, address);
+                if (cpuTokens[i].Type == CpuTokenType.Label) labels.Add(cpuTokens[i].Value.ReplaceAll(Constants.CHAR_LABEL, ""), address);
             }
         }
 

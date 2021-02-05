@@ -7,7 +7,7 @@ namespace Playground {
         public static void Main(string[] args) {
             var config = new CpuConfigurationBuilder()
                          .EnableDebug()
-                         .SetMemorySize(128)
+                         .SetMemorySize(256)
                          .SetOpcodeSize(8)
                          .SetInstructionSize(16)
                          .AddRegister("ax", 16)
@@ -21,6 +21,9 @@ namespace Playground {
                          .AddMicroInstruction(MicroInstruction.RegisterToRegister("pc-ma", "pc", "ma"))
                          .AddMicroInstruction(MicroInstruction.RegisterToRegister("md-ir", "md", "ir"))
                          .AddMicroInstruction(MicroInstruction.RegisterToRegister("ir(9-16)-ax", "ir", "ax", 8, 8, 8))
+                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("ir(9-16)-bx", "ir", "bx", 8, 8, 8))
+                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("ir(9-16)-ma", "ir", "ma", 8, 8, 8))
+                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("ir(9-16)-pc", "ir", "pc", 8, 8, 8))
                          .AddMicroInstruction(MicroInstruction.MemoryRead("memr", "ma", "md", 16))
                          .AddMicroInstruction(MicroInstruction.MemoryWrite("memw", "ma", "md"))
                          .AddMicroInstruction(MicroInstruction.Increment("pc-inc", "pc", 16))
@@ -34,6 +37,8 @@ namespace Playground {
                          .AddMicroInstruction(MicroInstruction.Set("zero-ax", "ax", 0))
                          .AddMicroInstruction(MicroInstruction.Set("zero-bx", "bx", 0))
                          .AddMicroInstruction(MicroInstruction.Set("halt", "halt", 1))
+                         .AddMicroInstruction(MicroInstruction.StaticCondition("eqze", "ax", 1, i => i == 0))
+                         .AddMicroInstruction(MicroInstruction.StaticCondition("neze", "ax", 1, i => i != 0))
                          .AddFdeCycle("pc-ma", "memr", "md-ir", "pc-inc", "decode")
                          .AddInstructionField("ignore8", 8, CpuFieldType.Ignore)
                          .AddInstructionField("data8", 8, CpuFieldType.Data)
@@ -52,27 +57,47 @@ namespace Playground {
                                             new[] {"data8"})
                          .AddCpuInstruction("SUB",
                                             CpuValue.FromInteger(4, 8),
-                                            new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "sub"},
+                                            new[] {"zero-bx", "ir(9-16)-bx", "sub"},
                                             new[] {"data8"})
                          .AddCpuInstruction("MULT",
                                             CpuValue.FromInteger(5, 8),
-                                            new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "mult"},
+                                            new[] {"zero-bx", "ir(9-16)-bx", "mult"},
                                             new[] {"data8"})
                          .AddCpuInstruction("DIV",
                                             CpuValue.FromInteger(6, 8),
-                                            new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "div"},
+                                            new[] {"zero-bx", "ir(9-16)-bx", "div"},
                                             new[] {"data8"})
                          .AddCpuInstruction("HALT",
                                             CpuValue.FromInteger(7, 8),
                                             new[] {"halt"},
                                             new[] {"ignore8"})
+                         .AddCpuInstruction("JUMP",
+                                            CpuValue.FromInteger(8, 8),
+                                            new[] {"ir(9-16)-pc"},
+                                            new[] {"address8"})
+                         .AddCpuInstruction("JEQZ",
+                                            CpuValue.FromInteger(9, 8),
+                                            new[] {"eqze", "ir(9-16)-pc"},
+                                            new[] {"address8"})
+                         .AddCpuInstruction("JNEZ",
+                                            CpuValue.FromInteger(10, 8),
+                                            new[] {"neze", "ir(9-16)-pc"},
+                                            new[] {"address8"})
                          .Build();
 
             var cpu = new Cpu(config);
 
             const string code = @"
 READ
-ADD 1
+:Loop
+JEQZ Done
+WRITE
+SUB 1
+JUMP Loop
+
+:Done
+MULT 0
+ADD 69
 WRITE
 HALT
 ";

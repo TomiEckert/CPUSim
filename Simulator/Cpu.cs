@@ -20,6 +20,19 @@ namespace Simulator {
 
         public void Compile(string code) {
             Compiler.Compile(Compiler.Tokenize(code, this), this);
+            if (Configuration.Debug)
+                DisplayMemory();
+        }
+
+        private void DisplayMemory() {
+            for (var i = 0; i < Configuration.MemorySize; i += Configuration.InstructionSize) {
+                var lineNr = i / Configuration.InstructionSize + " ";
+                Console.Write(lineNr.PadLeft(4, '0'));
+                Console.WriteLine(Memory.GetValueAt(i, Configuration.InstructionSize).Bin);
+            }
+
+            Console.ReadLine();
+            Console.Clear();
         }
 
         public void Execute() {

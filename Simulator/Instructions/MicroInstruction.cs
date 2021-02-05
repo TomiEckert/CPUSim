@@ -171,7 +171,8 @@ namespace Simulator.Instructions {
         #region === Logic ===
         public static MicroInstruction StaticCondition(string name, string register, int number, Func<int, bool> func) {
             ReturnBit Action(Cpu cpu) {
-                return func(cpu.Registers[register].GetInt()) ? new ReturnBit(ReturnBitType.OmitNextN, number) : ReturnBit.None;
+                var n1 = cpu.Registers[register].GetInt();
+                return func(n1) ? ReturnBit.None : new ReturnBit(ReturnBitType.OmitNextN, number);
             }
 
             return new MicroInstruction(name, Action);
@@ -181,7 +182,7 @@ namespace Simulator.Instructions {
             ReturnBit Action(Cpu cpu) {
                 var n1 = cpu.Registers[register1].GetInt();
                 var n2 = cpu.Registers[register2].GetInt();
-                return func(n1, n2) ? new ReturnBit(ReturnBitType.OmitNextN, number) : ReturnBit.None;
+                return func(n1, n2) ? ReturnBit.None : new ReturnBit(ReturnBitType.OmitNextN, number);
             }
             return new MicroInstruction(name, Action);
         }
