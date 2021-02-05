@@ -80,12 +80,12 @@ namespace Simulator {
             }
         }
 
-        private static bool IsValidInstruction(InstructionField requirement) {
+        private static bool IsInvalidInstruction(InstructionField requirement) {
             return requirement != null && requirement.Type != CpuFieldType.Ignore;
         }
 
         private static void ProcessInstruction(CpuToken token, Cpu cpu, InstructionField requirement) {
-            if (IsValidInstruction(requirement))
+            if (IsInvalidInstruction(requirement))
                 throw new UnexpectedInstructionException();
 
             var op = cpu.Instructions.NameToOpcode(token.Value);
