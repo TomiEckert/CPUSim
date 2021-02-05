@@ -18,6 +18,7 @@ namespace Simulator.Instructions {
             Action(cpu);
         }
 
+        #region === Register To Register ===
         public static MicroInstruction RegisterToRegister(string name, string from, string to) {
             void Action(Cpu cpu) {
                 cpu.Registers[to].SetBin(cpu.Registers[from].GetBin());
@@ -42,7 +43,9 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
+        #endregion
 
+        #region === Memory Access ===
         public static MicroInstruction MemoryRead(string name, string addressRegister,
                                                   string dataRegister, int length) {
             void Action(Cpu cpu) {
@@ -52,7 +55,6 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
-
         public static MicroInstruction MemoryWrite(string name, string addressRegister, string dataRegister) {
             void Action(Cpu cpu) {
                 cpu.Memory.SetValue(
@@ -63,15 +65,9 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
+        #endregion
 
-        public static MicroInstruction Set(string name, string register, int number) {
-            void Action(Cpu cpu) {
-                cpu.Registers[register].SetInt(number);
-            }
-
-            return new MicroInstruction(name, Action);
-        }
-
+        #region === IO Access ===
         public static MicroInstruction IoReadInt(string name, string register) {
             void Action(Cpu cpu) {
                 cpu.Registers[register].SetInt(int.Parse(Console.ReadLine() ?? "0"));
@@ -79,7 +75,6 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
-
         public static MicroInstruction IoWriteInt(string name, string register) {
             void Action(Cpu cpu) {
                 Console.WriteLine(cpu.Registers[register].GetInt());
@@ -87,7 +82,19 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
+        #endregion
 
+        #region === Set ===
+        public static MicroInstruction Set(string name, string register, int number) {
+            void Action(Cpu cpu) {
+                cpu.Registers[register].SetInt(number);
+            }
+
+            return new MicroInstruction(name, Action);
+        }
+        #endregion
+        
+        #region === Decode ===
         public static MicroInstruction Decode(string name, string register) {
             void Action(Cpu cpu) {
                 var bin = cpu.Registers[register].GetBin();
@@ -98,7 +105,9 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
+        #endregion
 
+        #region === Increment ===
         public static MicroInstruction Increment(string name, string register, int number) {
             void Action(Cpu cpu) {
                 var oldValue = cpu.Registers[register].GetInt();
@@ -108,7 +117,6 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
-
         public static MicroInstruction Decrement(string name, string register, int number) {
             void Action(Cpu cpu) {
                 cpu.Registers[register].SetInt(cpu.Registers[register].GetInt() - number);
@@ -116,7 +124,9 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
-
+        #endregion
+        
+        #region === Arithmetics ===
         public static MicroInstruction Add(string name, string source1, string source2, string destination) {
             void Action(Cpu cpu) {
                 cpu.Registers[destination]
@@ -125,7 +135,6 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
-
         public static MicroInstruction Subtract(string name, string source1, string source2, string destination) {
             void Action(Cpu cpu) {
                 cpu.Registers[destination]
@@ -134,7 +143,6 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
-
         public static MicroInstruction Multiply(string name, string source1, string source2, string destination) {
             void Action(Cpu cpu) {
                 cpu.Registers[destination]
@@ -143,7 +151,6 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
-
         public static MicroInstruction Divide(string name, string source1, string source2, string destination) {
             void Action(Cpu cpu) {
                 cpu.Registers[destination]
@@ -152,5 +159,6 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
+        #endregion
     }
 }
