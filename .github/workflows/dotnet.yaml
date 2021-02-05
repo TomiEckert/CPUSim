@@ -1,0 +1,30 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+        
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: 3.1.x
+          
+      - name: Restore NuGet
+        run: dotnet restore
+          
+      - name: Building
+        run: dotnet build --no-restore
+          
+      - name: Run tests
+        run: dotnet test --no-restore
