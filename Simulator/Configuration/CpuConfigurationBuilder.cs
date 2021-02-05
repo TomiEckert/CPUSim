@@ -88,7 +88,7 @@ namespace Simulator.Configuration {
                 verified = false;
 
             if (!verified)
-                throw new CpuConfigurationExceptions.RequiredFieldsNotAddedException();
+                throw new RequiredFieldsNotAddedException();
         }
     }
 }

@@ -20,8 +20,11 @@ namespace Simulator.Instructions {
         }
 
         public void Execute(Cpu cpu) {
-            foreach (var instructionName in MicroInstructionNames)
-                    cpu.MicroInstructions.GetInstruction(instructionName).ExecuteAction(cpu);
+            for (var i = 0; i < MicroInstructionNames.Length; i++) {
+                var returnBit = cpu.MicroInstructions.GetInstruction(MicroInstructionNames[i]).ExecuteAction(cpu);
+                if (returnBit.Type == ReturnBitType.OmitNextN)
+                    i += returnBit.Value;
+            }
         }
     }
 }

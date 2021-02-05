@@ -5,17 +5,24 @@ using Simulator.Utils;
 namespace Simulator.Instructions {
     public class MicroInstruction {
         private MicroInstruction(string name, Action<Cpu> executeAction) {
+            Action = cpu => {
+                executeAction(cpu);
+                return new ReturnBit(ReturnBitType.None, 0);
+            };
+            Name = name;
+        }
+        private MicroInstruction(string name, Func<Cpu, ReturnBit> executeAction) {
             Action = executeAction;
             Name = name;
         }
 
         public string Name { get; }
-        private Action<Cpu> Action { get; }
+        private Func<Cpu, ReturnBit> Action { get; }
 
-        public void ExecuteAction(Cpu cpu) {
+        internal ReturnBit ExecuteAction(Cpu cpu) {
             if (cpu.Configuration.Debug)
                 cpu.DisplayRegisters(Name);
-            Action(cpu);
+            return Action(cpu);
         }
 
         #region === Register To Register ===
@@ -157,6 +164,25 @@ namespace Simulator.Instructions {
                    .SetInt(cpu.Registers[source1].GetInt() / cpu.Registers[source2].GetInt());
             }
 
+            return new MicroInstruction(name, Action);
+        }
+        #endregion
+
+        #region === Logic ===
+        public static MicroInstruction StaticCondition(string name, string register, int number, Func<int, bool> func) {
+            ReturnBit Action(Cpu cpu) {
+                return func(cpu.Registers[register].GetInt()) ? new ReturnBit(ReturnBitType.OmitNextN, number) : ReturnBit.None;
+            }
+
+            return new MicroInstruction(name, Action);
+        }
+        public static MicroInstruction RegisterCondition(string name, string register1, string register2, int number,
+                                                         Func<int, int, bool> func) {
+            ReturnBit Action(Cpu cpu) {
+                var n1 = cpu.Registers[register1].GetInt();
+                var n2 = cpu.Registers[register2].GetInt();
+                return func(n1, n2) ? new ReturnBit(ReturnBitType.OmitNextN, number) : ReturnBit.None;
+            }
             return new MicroInstruction(name, Action);
         }
         #endregion
