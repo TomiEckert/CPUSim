@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Simulator.Instructions;
 
 namespace Simulator.Configuration {
@@ -34,6 +35,7 @@ namespace Simulator.Configuration {
         internal bool Debug { get; }
         internal int InstructionSize { get; }
         internal string CurrentInstruction { get; set; }
+        internal Func<bool> WaitAction { get; set; }
         internal IEnumerable<Register> Registers { get; }
         internal IEnumerable<MicroInstruction> MicroInstructions { get; }
         internal IEnumerable<MicroInstruction> FdeCycle { get; }

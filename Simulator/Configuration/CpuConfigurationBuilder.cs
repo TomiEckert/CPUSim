@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Simulator.Instructions;
 using Simulator.Utils;
@@ -20,6 +21,7 @@ namespace Simulator.Configuration {
         private int _instructionSize;
         private int _memorySize;
         private int _opcodeSize;
+        private Func<bool> WaitAction;
 
         public CpuConfigurationBuilder SetOpcodeSize(int size) {
             _opcodeSize = size;
@@ -38,6 +40,19 @@ namespace Simulator.Configuration {
 
         public CpuConfigurationBuilder EnableDebug() {
             _debug = true;
+            WaitAction = () => {
+                Console.Write("");
+                return false;
+            };
+            return this;
+        }
+        
+        public CpuConfigurationBuilder EnableStepDebug() {
+            _debug = true;
+            WaitAction = () => {
+                Console.ReadLine();
+                return true;
+            };
             return this;
         }
 
@@ -75,9 +90,10 @@ namespace Simulator.Configuration {
 
         public CpuConfiguration Build() {
             VerifyRequiredFields();
-            return new CpuConfiguration(_memorySize, _opcodeSize, _instructionSize, _debug, _registers,
-                                        _microInstructions,
-                                        _fdeCycle, _instructions);
+            var config = new CpuConfiguration(_memorySize, _opcodeSize, _instructionSize, _debug, _registers,
+                                              _microInstructions,
+                                              _fdeCycle, _instructions) {WaitAction = WaitAction};
+            return config;
         }
 
         private void VerifyRequiredFields() {

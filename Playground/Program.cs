@@ -1,116 +1,22 @@
 ﻿using Simulator;
 using Simulator.Configuration;
-using Simulator.Instructions;
 
 namespace Playground {
     public static class Program {
         public static void Main(string[] args) {
-            var config = new CpuConfigurationBuilder()
-                         .EnableDebug()
-                         .SetMemorySize(256)
-                         .SetOpcodeSize(8)
-                         .SetInstructionSize(16)
-                         .AddRegister("ax", 16)
-                         .AddRegister("bx", 16)
-                         .AddRegister("ma", 16)
-                         .AddRegister("md", 16)
-                         .AddRegister("pc", 16)
-                         .AddRegister("ir", 16)
-                         .AddRegister("halt", 1, true)
-                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("ax-bx", "ax", "bx"))
-                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("pc-ma", "pc", "ma"))
-                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("md-ir", "md", "ir"))
-                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("ir(9-16)-ax", "ir", "ax", 8, 8, 8))
-                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("ir(9-16)-bx", "ir", "bx", 8, 8, 8))
-                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("ir(9-16)-ma", "ir", "ma", 8, 8, 8))
-                         .AddMicroInstruction(MicroInstruction.RegisterToRegister("ir(9-16)-pc", "ir", "pc", 8, 8, 8))
-                         .AddMicroInstruction(MicroInstruction.MemoryRead("memr", "ma", "md", 16))
-                         .AddMicroInstruction(MicroInstruction.MemoryWrite("memw", "ma", "md"))
-                         .AddMicroInstruction(MicroInstruction.Increment("pc-inc", "pc", 16))
-                         .AddMicroInstruction(MicroInstruction.Add("add", "ax", "bx", "ax"))
-                         .AddMicroInstruction(MicroInstruction.Subtract("sub", "ax", "bx", "ax"))
-                         .AddMicroInstruction(MicroInstruction.Multiply("mult", "ax", "bx", "ax"))
-                         .AddMicroInstruction(MicroInstruction.Divide("div", "ax", "bx", "ax"))
-                         .AddMicroInstruction(MicroInstruction.Decode("decode", "ir"))
-                         .AddMicroInstruction(MicroInstruction.IoReadInt("read", "ax"))
-                         .AddMicroInstruction(MicroInstruction.IoWriteInt("write", "ax"))
-                         .AddMicroInstruction(MicroInstruction.Set("zero-ax", "ax", 0))
-                         .AddMicroInstruction(MicroInstruction.Set("zero-bx", "bx", 0))
-                         .AddMicroInstruction(MicroInstruction.Set("halt", "halt", 1))
-                         .AddMicroInstruction(MicroInstruction.StaticCondition("eqze", "ax", 1, i => i == 0))
-                         .AddMicroInstruction(MicroInstruction.StaticCondition("neze", "ax", 1, i => i != 0))
-                         .AddFdeCycle("pc-ma", "memr", "md-ir", "pc-inc", "decode")
-                         .AddInstructionField("ignore8", 8, CpuFieldType.Ignore)
-                         .AddInstructionField("data8", 8, CpuFieldType.Data)
-                         .AddInstructionField("address8", 8, CpuFieldType.Address)
-                         .AddCpuInstruction("read",
-                                            CpuValue.FromInteger(1, 8),
-                                            new[] {"read"},
-                                            new[] {"ignore8"})
-                         .AddCpuInstruction("write",
-                                            CpuValue.FromInteger(2, 8),
-                                            new[] {"write"},
-                                            new[] {"ignore8"})
-                         .AddCpuInstruction("add",
-                                            CpuValue.FromInteger(3, 8),
-                                            new[] {"ax-bx", "zero-ax", "ir(9-16)-ax", "add"},
-                                            new[] {"data8"})
-                         .AddCpuInstruction("sub",
-                                            CpuValue.FromInteger(4, 8),
-                                            new[] {"zero-bx", "ir(9-16)-bx", "sub"},
-                                            new[] {"data8"})
-                         .AddCpuInstruction("mult",
-                                            CpuValue.FromInteger(5, 8),
-                                            new[] {"zero-bx", "ir(9-16)-bx", "mult"},
-                                            new[] {"data8"})
-                         .AddCpuInstruction("div",
-                                            CpuValue.FromInteger(6, 8),
-                                            new[] {"zero-bx", "ir(9-16)-bx", "div"},
-                                            new[] {"data8"})
-                         .AddCpuInstruction("halt",
-                                            CpuValue.FromInteger(7, 8),
-                                            new[] {"halt"},
-                                            new[] {"ignore8"})
-                         .AddCpuInstruction("jump",
-                                            CpuValue.FromInteger(8, 8),
-                                            new[] {"ir(9-16)-pc"},
-                                            new[] {"address8"})
-                         .AddCpuInstruction("jeqz",
-                                            CpuValue.FromInteger(9, 8),
-                                            new[] {"eqze", "ir(9-16)-pc"},
-                                            new[] {"address8"})
-                         .AddCpuInstruction("read",
-                                            CpuValue.FromInteger(10, 8),
-                                            new[] {"neze", "ir(9-16)-pc"},
-                                            new[] {"address8"})
-                         .Build();
-
-            var cpu = new Cpu(config);
-
-            const string code1 = @"
-:Start read
-	jeqz Done
-	sub 1
-	jump Start
-:Done write
-	halt
-";
+            var cpu = new Cpu(CpuConfigLibrary.Cpu32Bit.EnableDebug().Build());
 
             const string code = @"
-READ
-:Loop
-JEQZ Done
-WRITE
-SUB 1
-JUMP Loop
+in
 
-:Done
-MULT 0
-ADD 69
-WRITE
-HALT
+_start  call_eq_v   0       done
+        sub_v       1
+	    call        start
+
+_done   out
+        halt
 ";
-            cpu.Compile(code1);
+            cpu.Compile(code);
             cpu.Execute();
         }
     }

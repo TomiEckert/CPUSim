@@ -29,7 +29,7 @@ namespace Simulator {
                          let n = register.Value.Name
                          let bin = register.Value.GetBin()
                          let i = register.Value.GetInt()
-                         select n + ": " + bin + " (" + i + ")").ToList();
+                         select n + ": " + bin + " (" + i + ")    ").ToList();
 
             return string.Join('\n', texts);
         }

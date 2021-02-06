@@ -14,7 +14,7 @@
 
     public enum CpuFieldType {
         Ignore,
-        Data,
+        Value,
         Address
     }
 }

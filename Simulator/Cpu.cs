@@ -1,4 +1,5 @@
 ﻿using System;
+using Simulator.Compile;
 using Simulator.Configuration;
 using Simulator.Instructions;
 
@@ -19,7 +20,7 @@ namespace Simulator {
         internal CpuInstructionManager Instructions { get; }
 
         public void Compile(string code) {
-            Compiler.Compile(Compiler.Tokenize(code, this), this);
+            Compiler.Compile(code, this);
             if (Configuration.Debug)
                 DisplayMemory();
         }
@@ -49,8 +50,8 @@ namespace Simulator {
             Console.WriteLine(Registers.GetRegisterData());
             Console.WriteLine(" ---");
             Console.WriteLine(Configuration.CurrentInstruction + "            ");
-            Console.WriteLine(instruction + "            ");
-            Console.ReadLine();
+            if (Configuration.WaitAction())
+                Console.WriteLine(instruction + "            ");
         }
     }
 }

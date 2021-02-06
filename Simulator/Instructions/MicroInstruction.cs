@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Simulator.Utils;
 // ReSharper disable UnusedMember.Global
 
@@ -82,9 +83,23 @@ namespace Simulator.Instructions {
 
             return new MicroInstruction(name, Action);
         }
+        public static MicroInstruction IoReadChar(string name, string register) {
+            void Action(Cpu cpu) {
+                cpu.Registers[register].SetInt(Console.Read());
+            }
+
+            return new MicroInstruction(name, Action);
+        }
         public static MicroInstruction IoWriteInt(string name, string register) {
             void Action(Cpu cpu) {
                 Console.WriteLine(cpu.Registers[register].GetInt());
+            }
+
+            return new MicroInstruction(name, Action);
+        }
+        public static MicroInstruction IoWriteChar(string name, string register) {
+            void Action(Cpu cpu) {
+                Console.WriteLine((char)cpu.Registers[register].GetInt());
             }
 
             return new MicroInstruction(name, Action);
