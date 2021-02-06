@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Simulator.Utils;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -53,10 +54,17 @@ namespace Simulator {
         }
 
         internal static CpuValue FromBinary(IEnumerable<CpuBinary> binary) {
-            var cpuBinaries = binary as CpuBinary[] ?? binary.ToArray();
-            var bin = cpuBinaries.Aggregate(
-                "", (current, cpuBinary) => current + (cpuBinary == CpuBinary.One ? "1" : "0"));
-            return new CpuValue(bin, cpuBinaries.Length);
+            CpuBinary[] cpuBinaries = binary.ToArray();
+            
+            var bin = new StringBuilder(new string('0', cpuBinaries.Length));
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            for (var i = 0; i < cpuBinaries.Length; i++) {
+                var cpuBinary = cpuBinaries[i];
+                if (cpuBinary == CpuBinary.One)
+                    bin[i] = '1';
+            }
+
+            return new CpuValue(bin.ToString(), cpuBinaries.Length);
         }
         
         public static bool operator ==(CpuValue a, CpuValue b) {
