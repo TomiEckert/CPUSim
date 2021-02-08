@@ -4,7 +4,7 @@ using Simulator.Instructions;
 using Simulator.Utils;
 
 namespace Simulator.Compile {
-    public class Labeler {
+    public static class Labeler {
         private static Dictionary<string, int> labels;
         private static int index;
         private static int address;
@@ -29,7 +29,7 @@ namespace Simulator.Compile {
             labels.Add(cpuTokens[index].Value.ReplaceAll(Constants.CHAR_LABEL, ""), address);
             return true;
         }
-        private static bool ProcessData(CpuToken[] cpuTokens, IEnumerable<DataToken> data) {
+        private static bool ProcessData(IReadOnlyList<CpuToken> cpuTokens, IEnumerable<DataToken> data) {
             if (cpuTokens[index].Type != CpuTokenType.Data) return false;
             var length = data.Where(x => x.Address == address).Select(x => x.Length).FirstOrDefault();
             index += 3;

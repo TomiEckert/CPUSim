@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Simulator.Instructions;
 
 namespace Simulator.Configuration {
@@ -18,7 +19,7 @@ namespace Simulator.Configuration {
             Debug = debug;
             Registers = registers;
             MicroInstructions = microInstructions;
-            FdeCycle = fdeCycle;
+            FdeCycle = fdeCycle.ToArray();
             CpuInstructions = cpuInstructions;
         }
 
@@ -38,7 +39,7 @@ namespace Simulator.Configuration {
         internal Func<bool> WaitAction { get; set; }
         internal IEnumerable<Register> Registers { get; }
         internal IEnumerable<MicroInstruction> MicroInstructions { get; }
-        internal IEnumerable<MicroInstruction> FdeCycle { get; }
+        internal MicroInstruction[] FdeCycle { get; }
         internal IEnumerable<CpuInstruction> CpuInstructions { get; }
     }
 }

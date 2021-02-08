@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Simulator.Instructions;
 using Simulator.Utils;
+// ReSharper disable UnusedMember.Global
 
 namespace Simulator.Configuration {
     public class CpuConfigurationBuilder {
@@ -21,7 +22,7 @@ namespace Simulator.Configuration {
         private int _instructionSize;
         private int _memorySize;
         private int _opcodeSize;
-        private Func<bool> WaitAction;
+        private Func<bool> _waitAction;
 
         public CpuConfigurationBuilder SetOpcodeSize(int size) {
             _opcodeSize = size;
@@ -40,7 +41,7 @@ namespace Simulator.Configuration {
 
         public CpuConfigurationBuilder EnableDebug() {
             _debug = true;
-            WaitAction = () => {
+            _waitAction = () => {
                 Console.Write("");
                 return false;
             };
@@ -49,7 +50,7 @@ namespace Simulator.Configuration {
         
         public CpuConfigurationBuilder EnableStepDebug() {
             _debug = true;
-            WaitAction = () => {
+            _waitAction = () => {
                 Console.ReadLine();
                 return true;
             };
@@ -92,7 +93,7 @@ namespace Simulator.Configuration {
             VerifyRequiredFields();
             var config = new CpuConfiguration(_memorySize, _opcodeSize, _instructionSize, _debug, _registers,
                                               _microInstructions,
-                                              _fdeCycle, _instructions) {WaitAction = WaitAction};
+                                              _fdeCycle, _instructions) {WaitAction = _waitAction};
             return config;
         }
 

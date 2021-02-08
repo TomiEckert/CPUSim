@@ -4,6 +4,7 @@ using Simulator.Utils;
 
 namespace Simulator {
     public class RegisterManager {
+        private readonly Register[] _haltRegisters;
         internal RegisterManager(IEnumerable<Register> registers) {
             Registers = new Dictionary<string, Register>();
 
@@ -12,6 +13,8 @@ namespace Simulator {
                     throw new RegisterNameDuplicationException();
                 Registers.Add(register.Name, register);
             }
+
+            _haltRegisters = Registers.Values.Where(x => x.Halt).ToArray();
         }
 
         private Dictionary<string, Register> Registers { get; }
@@ -35,7 +38,7 @@ namespace Simulator {
         }
 
         public Register GetHalt() {
-            return Registers.Values.FirstOrDefault(x => x.Halt);
+            return _haltRegisters.FirstOrDefault(x => x.Halt);
         }
     }
 }

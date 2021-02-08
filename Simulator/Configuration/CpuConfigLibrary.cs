@@ -1,4 +1,5 @@
 ﻿using Simulator.Instructions;
+// ReSharper disable UnusedMember.Global
 
 namespace Simulator.Configuration {
     public static class CpuConfigLibrary {

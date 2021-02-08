@@ -26,7 +26,7 @@ namespace Simulator.Compile {
         }
 
         // ReSharper disable once CognitiveComplexity
-        private static void WriteToMemory(List<CpuToken> tokens, Cpu cpu) {
+        private static void WriteToMemory(IReadOnlyList<CpuToken> tokens, Cpu cpu) {
             stack = new Stack<InstructionField>();
             counter = 0;
 
@@ -56,6 +56,7 @@ namespace Simulator.Compile {
             }
         }
 
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private static void ProcessData(Cpu cpu, List<DataToken> dataTokens) {
             var dataToken = dataTokens.FirstOrDefault(x => x.Address == counter);
             cpu.Memory.SetValue(dataToken.Value.ToCpuValue(dataToken.Length), dataToken.Address);

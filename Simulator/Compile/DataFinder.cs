@@ -3,7 +3,7 @@ using System.Linq;
 using Simulator.Instructions;
 
 namespace Simulator.Compile {
-    public class DataFinder {
+    public static class DataFinder {
         private static List<DataToken> data;
         private static int index;
         private static int address;
