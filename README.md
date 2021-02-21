@@ -1,5 +1,7 @@
 # CPUSIM
 
+> Tomi Eckert
+
 A C# library that simulates a CPU.
 
 - [CPUSIM](#cpusim)
