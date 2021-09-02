@@ -20,6 +20,9 @@ jobs:
         with:
           dotnet-version: 3.1.x
           
+      - name: Say stuff
+        run: echo "this is very fun"
+          
       - name: Restore NuGet
         run: dotnet restore
           
