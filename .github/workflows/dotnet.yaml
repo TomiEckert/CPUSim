@@ -18,7 +18,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: 3.1.x
+          dotnet-version: 8.0
           
       - name: Say stuff
         run: echo "this is very fun"
