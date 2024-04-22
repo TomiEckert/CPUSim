@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using Simulator.Utils;
+using Simulator.Utils.Exceptions;
 
-namespace Simulator.Instructions {
+namespace Simulator.Instructions
+{
     internal class MicroInstructionManager {
         internal MicroInstructionManager(IEnumerable<MicroInstruction> mi) {
             Instructions = new Dictionary<string, MicroInstruction>();

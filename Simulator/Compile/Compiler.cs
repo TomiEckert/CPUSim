@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Simulator.Instructions;
 using Simulator.Utils;
+using Simulator.Utils.Exceptions;
 
 // ReSharper disable SwitchStatementHandlesSomeKnownEnumValuesWithDefault
 

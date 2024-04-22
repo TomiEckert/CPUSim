@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Simulator.Utils;
+using Simulator.Utils.Exceptions;
 
 namespace Simulator {
     public class RegisterManager {

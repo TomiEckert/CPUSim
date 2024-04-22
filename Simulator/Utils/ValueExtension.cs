@@ -1,4 +1,5 @@
 ﻿using System;
+using Simulator.Utils.Exceptions;
 
 namespace Simulator.Utils {
     public static class ValueExtension {

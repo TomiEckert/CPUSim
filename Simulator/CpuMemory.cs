@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Simulator.Utils;
+using Simulator.Utils.Exceptions;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 
-namespace Simulator {
+namespace Simulator
+{
     public class CpuMemory {
         public CpuMemory(int size) {
             MemorySize = size;

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Simulator.Utils;
+using Simulator.Utils.Exceptions;
 
 // ReSharper disable MemberCanBePrivate.Global
 
