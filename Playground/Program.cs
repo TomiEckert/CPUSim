@@ -4,7 +4,8 @@ using Simulator.Configuration;
 namespace Playground {
     public static class Program {
         public static void Main(string[] args) {
-            var cpu = new Cpu(CpuConfigLibrary.Cpu32Bit.Build());
+            var c = CpuConfigLibrary.Cpu32Bit.Build();
+            var cpu = new Cpu(c);
 
             const string code = @"
 in

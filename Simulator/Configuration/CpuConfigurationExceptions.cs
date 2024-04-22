@@ -7,9 +7,5 @@ namespace Simulator.Configuration {
         public RequiredFieldsNotAddedException() { }
         public RequiredFieldsNotAddedException(string message) : base(message) { }
         public RequiredFieldsNotAddedException(string message, Exception inner) : base(message, inner) { }
-
-        protected RequiredFieldsNotAddedException(
-        SerializationInfo info,
-        StreamingContext context) : base(info, context) { }
     }
 }
