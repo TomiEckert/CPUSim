@@ -17,7 +17,6 @@ internal static class Compiler {
   private static InstructionField currentField;
 
   internal static void Compile(string code, Cpu cpu) {
-
     var tokens = Tokenizer.Tokenize(code, cpu).ToList();
 
     data = DataFinder.FindData(tokens, cpu);
@@ -32,7 +31,6 @@ internal static class Compiler {
     counter = 0;
 
     for (index = 0; index < tokens.Count; index++) {
-
       var cpuToken = tokens[index];
       currentField = null;
 

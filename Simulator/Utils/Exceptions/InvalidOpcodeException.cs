@@ -1,7 +1,6 @@
 ﻿using System;
 
 namespace Simulator.Utils.Exceptions {
-
 [Serializable]
 public class InvalidOpcodeException : Exception {
   public InvalidOpcodeException() {}
