@@ -3,11 +3,11 @@ using Simulator.Configuration;
 
 namespace Playground {
 public static class Program {
-  public static void Main(string[] args) {
-    var c = CpuConfigLibrary.Cpu32Bit.Build();
-    var cpu = new Cpu(c);
+    public static void Main(string[] args) {
+        var c = CpuConfigLibrary.Cpu32Bit.Build();
+        var cpu = new Cpu(c);
 
-    const string code = @"
+        const string code = @"
 in
 
 _start  call_eq_v   0       done
@@ -17,8 +17,8 @@ _start  call_eq_v   0       done
 _done   out
         halt
 ";
-    cpu.Compile(code);
-    cpu.Execute();
-  }
+        cpu.Compile(code);
+        cpu.Execute();
+    }
 }
 }
