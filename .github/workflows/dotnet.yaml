@@ -15,13 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
         
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1.7.2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 3.1.x
-          
-      - name: Say stuff
-        run: echo "this is very fun"
+          dotnet-version: 8.0.x
           
       - name: Restore NuGet
         run: dotnet restore
